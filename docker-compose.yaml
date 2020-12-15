@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: "ashar007!"
+      MYSQL_DATABASE: "mysqldocker"
+      MYSQL_USER: "axharkhan"
+      MYSQL_PASSWORD: "ashar007!"
+    ports:
+      - 3306:3306
+  adminer:
+    image: adminer:latest
+    environment:
+      ADMINER_DEFAULT_SERVER: mysql
+    depends_on:
+      - mysql
+    ports:
+      - 3000:8080
+  app:
+    image: beegowebsite:2.0
+
+
+    depends_on:
+      - mysql
+    environment:
+      WAIT_HOSTS: mysql:3306
+
+    ports: 
+      - 8080:3000
+    command: bee run
+    
+volumes:
+  goinvest-volume:
